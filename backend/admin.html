@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio Admin Panel</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      min-height: 100vh;
+      color: #e2e8f0;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+      padding: 2rem;
+      background: rgba(255,255,255,0.05);
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    h1 {
+      font-size: 2.5rem;
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+    
+    .tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    .tab {
+      padding: 0.75rem 1.5rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+      color: #94a3b8;
+    }
+    
+    .tab:hover, .tab.active {
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+      color: white;
+      border-color: transparent;
+    }
+    
+    .section {
+      display: none;
+      background: rgba(255,255,255,0.05);
+      border-radius: 16px;
+      padding: 2rem;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .section.active { display: block; }
+    
+    .section h2 {
+      margin-bottom: 1.5rem;
+      color: #a855f7;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #94a3b8;
+      font-size: 0.9rem;
+    }
+    
+    input, textarea, select {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      color: white;
+      font-size: 1rem;
+    }
+    
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: #6366f1;
+    }
+    
+    textarea { min-height: 100px; resize: vertical; }
+    
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s;
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+      color: white;
+    }
+    
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-2px); }
+    
+    .btn-danger {
+      background: #ef4444;
+      color: white;
+    }
+    
+    .btn-secondary {
+      background: rgba(255,255,255,0.1);
+      color: #94a3b8;
+    }
+    
+    .card {
+      background: rgba(0,0,0,0.2);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    
+    .card h3 {
+      color: #6366f1;
+      margin-bottom: 0.5rem;
+    }
+    
+    .card p {
+      color: #94a3b8;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .card-actions {
+      margin-top: 1rem;
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    
+    .tag {
+      background: rgba(99, 102, 241, 0.2);
+      color: #a5b4fc;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+    }
+    
+    .alert {
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      display: none;
+    }
+    
+    .alert-success {
+      background: rgba(34, 197, 94, 0.2);
+      border: 1px solid #22c55e;
+      color: #22c55e;
+    }
+    
+    .alert-error {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid #ef4444;
+      color: #ef4444;
+    }
+    
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1rem;
+    }
+    
+    .summary-list {
+      list-style: none;
+    }
+    
+    .summary-list li {
+      position: relative;
+      padding-left: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .summary-list li::before {
+      content: "▹";
+      position: absolute;
+      left: 0;
+      color: #6366f1;
+    }
+    
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+    }
+    
+    .modal.active { display: flex; }
+    
+    .modal-content {
+      background: #1a1a2e;
+      padding: 2rem;
+      border-radius: 16px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .modal-close {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    
+    @media (max-width: 768px) {
+      .container { padding: 1rem; }
+      h1 { font-size: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📋 Portfolio Admin Panel</h1>
+      <p style="color: #94a3b8;">Manage your portfolio content easily</p>
+    </header>
+    
+    <div id="alert" class="alert"></div>
+    
+    <div class="tabs">
+      <button class="tab active" onclick="showSection('personal')">👤 Personal Info</button>
+      <button class="tab" onclick="showSection('skills')">💻 Skills</button>
+      <button class="tab" onclick="showSection('experience')">💼 Experience</button>
+      <button class="tab" onclick="showSection('projects')">🚀 Projects</button>
+      <button class="tab" onclick="showSection('education')">🎓 Education</button>
+      <button class="tab" onclick="showSection('certifications')">🏆 Certifications</button>
+    </div>
+    
+    <!-- Personal Info Section -->
+    <div id="personal" class="section active">
+      <h2>👤 Personal Information</h2>
+      <form id="personalForm">
+        <div class="grid-2">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="name" required>
+          </div>
+          <div class="form-group">
+            <label>Title / Role</label>
+            <input type="text" id="title" required>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="email" required>
+          </div>
+          <div class="form-group">
+            <label>Phone</label>
+            <input type="text" id="phone">
+          </div>
+          <div class="form-group">
+            <label>Location</label>
+            <input type="text" id="location">
+          </div>
+          <div class="form-group">
+            <label>GitHub URL</label>
+            <input type="url" id="github">
+          </div>
+          <div class="form-group">
+            <label>LinkedIn URL</label>
+            <input type="url" id="linkedin">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Professional Summary (one point per line)</label>
+          <textarea id="summary" rows="6"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">💾 Save Changes</button>
+      </form>
+    </div>
+    
+    <!-- Skills Section -->
+    <div id="skills" class="section">
+      <h2>💻 Skills</h2>
+      <form id="skillsForm">
+        <div class="form-group">
+          <label>Programming Languages (comma separated)</label>
+          <input type="text" id="languages" placeholder="C++, Python, JavaScript">
+        </div>
+        <div class="form-group">
+          <label>Frameworks & Tools (comma separated)</label>
+          <input type="text" id="frameworks" placeholder="React.js, Node.js, MongoDB">
+        </div>
+        <div class="form-group">
+          <label>Developer Tools (comma separated)</label>
+          <input type="text" id="tools" placeholder="Git, Docker, VS Code">
+        </div>
+        <div class="form-group">
+          <label>Domains (comma separated)</label>
+          <input type="text" id="domains" placeholder="Full-Stack, Machine Learning">
+        </div>
+        <button type="submit" class="btn btn-primary">💾 Save Skills</button>
+      </form>
+    </div>
+    
+    <!-- Experience Section -->
+    <div id="experience" class="section">
+      <h2>💼 Work Experience</h2>
+      <button class="btn btn-primary" onclick="openExpModal()">➕ Add Experience</button>
+      <div id="experienceList" style="margin-top: 1rem;"></div>
+    </div>
+    
+    <!-- Projects Section -->
+    <div id="projects" class="section">
+      <h2>🚀 Projects</h2>
+      <button class="btn btn-primary" onclick="openProjectModal()">➕ Add Project</button>
+      <div id="projectsList" style="margin-top: 1rem;"></div>
+    </div>
+    
+    <!-- Education Section -->
+    <div id="education" class="section">
+      <h2>🎓 Education</h2>
+      <button class="btn btn-primary" onclick="addEducation()">➕ Add Education</button>
+      <div id="educationList" style="margin-top: 1rem;"></div>
+    </div>
+    
+    <!-- Certifications Section -->
+    <div id="certifications" class="section">
+      <h2>🏆 Certifications</h2>
+      <button class="btn btn-primary" onclick="addCertification()">➕ Add Certification</button>
+      <div id="certificationsList" style="margin-top: 1rem;"></div>
+    </div>
+  </div>
+  
+  <!-- Experience Modal -->
+  <div id="expModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Experience Details</h2>
+        <button class="modal-close" onclick="closeModal('expModal')">&times;</button>
+      </div>
+      <form id="expForm">
+        <input type="hidden" id="expIndex" value="-1">
+        <div class="form-group">
+          <label>Company Name</label>
+          <input type="text" id="expCompany" required>
+        </div>
+        <div class="form-group">
+          <label>Position / Role</label>
+          <input type="text" id="expPosition" required>
+        </div>
+        <div class="form-group">
+          <label>Location</label>
+          <input type="text" id="expLocation">
+        </div>
+        <div class="form-group">
+          <label>Period (e.g., Oct 2024 – Present)</label>
+          <input type="text" id="expPeriod">
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea id="expDescription"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Highlights (one per line)</label>
+          <textarea id="expHighlights"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">💾 Save</button>
+      </form>
+    </div>
+  </div>
+  
+  <!-- Project Modal -->
+  <div id="projectModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Project Details</h2>
+        <button class="modal-close" onclick="closeModal('projectModal')">&times;</button>
+      </div>
+      <form id="projectForm">
+        <input type="hidden" id="projIndex" value="-1">
+        <div class="form-group">
+          <label>Project Title</label>
+          <input type="text" id="projTitle" required>
+        </div>
+        <div class="form-group">
+          <label>Year</label>
+          <input type="text" id="projYear">
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select id="projStatus">
+            <option value="Completed">Completed</option>
+            <option value="In Development">In Development</option>
+            <option value="On Hold">On Hold</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea id="projDescription"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Technologies (comma separated)</label>
+          <input type="text" id="projTech" placeholder="React, Node.js, MongoDB">
+        </div>
+        <button type="submit" class="btn btn-primary">💾 Save</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = 'http://localhost:3001/api';
+    let portfolioData = {};
+
+    // Load data on page load
+    async function loadData() {
+      try {
+        const res = await fetch(`${API_BASE}/data`);
+        portfolioData = await res.json();
+        populateForms();
+        renderExperience();
+        renderProjects();
+        renderEducation();
+        renderCertifications();
+      } catch (error) {
+        showAlert('Failed to load data', 'error');
+      }
+    }
+
+    function showAlert(message, type = 'success') {
+      const alert = document.getElementById('alert');
+      alert.textContent = message;
+      alert.className = `alert alert-${type}`;
+      alert.style.display = 'block';
+      setTimeout(() => alert.style.display = 'none', 3000);
+    }
+
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    function populateForms() {
+      // Personal Info
+      const p = portfolioData.personalInfo;
+      document.getElementById('name').value = p.name || '';
+      document.getElementById('title').value = p.title || '';
+      document.getElementById('email').value = p.email || '';
+      document.getElementById('phone').value = p.phone || '';
+      document.getElementById('location').value = p.location || '';
+      document.getElementById('github').value = p.github || '';
+      document.getElementById('linkedin').value = p.linkedin || '';
+      document.getElementById('summary').value = (p.summary || []).join('\n');
+      
+      // Skills
+      const s = portfolioData.skills;
+      document.getElementById('languages').value = (s.languages || []).join(', ');
+      document.getElementById('frameworks').value = (s.frameworks || []).join(', ');
+      document.getElementById('tools').value = (s.tools || []).join(', ');
+      document.getElementById('domains').value = (s.domains || []).join(', ');
+    }
+
+    // Personal Form
+    document.getElementById('personalForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = {
+        name: document.getElementById('name').value,
+        title: document.getElementById('title').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        location: document.getElementById('location').value,
+        github: document.getElementById('github').value,
+        linkedin: document.getElementById('linkedin').value,
+        summary: document.getElementById('summary').value.split('\n').filter(s => s.trim())
+      };
+      
+      try {
+        await fetch(`${API_BASE}/personal`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        showAlert('Personal info saved successfully!');
+      } catch (error) {
+        showAlert('Failed to save', 'error');
+      }
+    });
+
+    // Skills Form
+    document.getElementById('skillsForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = {
+        languages: document.getElementById('languages').value.split(',').map(s => s.trim()).filter(s => s),
+        frameworks: document.getElementById('frameworks').value.split(',').map(s => s.trim()).filter(s => s),
+        tools: document.getElementById('tools').value.split(',').map(s => s.trim()).filter(s => s),
+        domains: document.getElementById('domains').value.split(',').map(s => s.trim()).filter(s => s)
+      };
+      
+      try {
+        await fetch(`${API_BASE}/skills`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        showAlert('Skills saved successfully!');
+      } catch (error) {
+        showAlert('Failed to save', 'error');
+      }
+    });
+
+    // Experience
+    function renderExperience() {
+      const list = document.getElementById('experienceList');
+      list.innerHTML = portfolioData.experience.map((exp, i) => `
+        <div class="card">
+          <h3>${exp.position}</h3>
+          <p><strong>${exp.company}</strong> • ${exp.location}</p>
+          <p>${exp.period}</p>
+          <p style="margin-top: 0.5rem;">${exp.description}</p>
+          ${exp.highlights.length ? `<ul class="summary-list" style="margin-top: 0.5rem;">${exp.highlights.map(h => `<li>${h}</li>`).join('')}</ul>` : ''}
+          <div class="card-actions">
+            <button class="btn btn-secondary" onclick="editExp(${i})">✏️ Edit</button>
+            <button class="btn btn-danger" onclick="deleteExp(${i})">🗑️ Delete</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function openExpModal(index = -1) {
+      document.getElementById('expIndex').value = index;
+      if (index >= 0) {
+        const exp = portfolioData.experience[index];
+        document.getElementById('expCompany').value = exp.company;
+        document.getElementById('expPosition').value = exp.position;
+        document.getElementById('expLocation').value = exp.location;
+        document.getElementById('expPeriod').value = exp.period;
+        document.getElementById('expDescription').value = exp.description;
+        document.getElementById('expHighlights').value = (exp.highlights || []).join('\n');
+      } else {
+        document.getElementById('expForm').reset();
+      }
+      document.getElementById('expModal').classList.add('active');
+    }
+
+    function editExp(i) { openExpModal(i); }
+
+    async function deleteExp(i) {
+      if (!confirm('Delete this experience?')) return;
+      await fetch(`${API_BASE}/experience/${i}`, { method: 'DELETE' });
+      portfolioData.experience.splice(i, 1);
+      renderExperience();
+      showAlert('Experience deleted');
+    }
+
+    document.getElementById('expForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const index = parseInt(document.getElementById('expIndex').value);
+      const data = {
+        company: document.getElementById('expCompany').value,
+        position: document.getElementById('expPosition').value,
+        location: document.getElementById('expLocation').value,
+        period: document.getElementById('expPeriod').value,
+        description: document.getElementById('expDescription').value,
+        highlights: document.getElementById('expHighlights').value.split('\n').filter(s => s.trim())
+      };
+      
+      if (index >= 0) {
+        await fetch(`${API_BASE}/experience/${index}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        portfolioData.experience[index] = data;
+      } else {
+        await fetch(`${API_BASE}/experience`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        portfolioData.experience.push(data);
+      }
+      
+      closeModal('expModal');
+      renderExperience();
+      showAlert('Experience saved!');
+    });
+
+    // Projects
+    function renderProjects() {
+      const list = document.getElementById('projectsList');
+      list.innerHTML = portfolioData.projects.map((proj, i) => `
+        <div class="card">
+          <h3>${proj.title} <span style="color: ${proj.status === 'Completed' ? '#22c55e' : '#eab308'}; font-size: 0.8rem;">(${proj.status})</span></h3>
+          <p>${proj.year}</p>
+          <p style="margin-top: 0.5rem;">${proj.description}</p>
+          <div class="tags">${proj.technologies.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+          <div class="card-actions">
+            <button class="btn btn-secondary" onclick="editProject(${i})">✏️ Edit</button>
+            <button class="btn btn-danger" onclick="deleteProject(${i})">🗑️ Delete</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function openProjectModal(index = -1) {
+      document.getElementById('projIndex').value = index;
+      if (index >= 0) {
+        const proj = portfolioData.projects[index];
+        document.getElementById('projTitle').value = proj.title;
+        document.getElementById('projYear').value = proj.year;
+        document.getElementById('projStatus').value = proj.status;
+        document.getElementById('projDescription').value = proj.description;
+        document.getElementById('projTech').value = (proj.technologies || []).join(', ');
+      } else {
+        document.getElementById('projectForm').reset();
+      }
+      document.getElementById('projectModal').classList.add('active');
+    }
+
+    function editProject(i) { openProjectModal(i); }
+
+    async function deleteProject(i) {
+      if (!confirm('Delete this project?')) return;
+      await fetch(`${API_BASE}/projects/${i}`, { method: 'DELETE' });
+      portfolioData.projects.splice(i, 1);
+      renderProjects();
+      showAlert('Project deleted');
+    }
+
+    document.getElementById('projectForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const index = parseInt(document.getElementById('projIndex').value);
+      const data = {
+        title: document.getElementById('projTitle').value,
+        year: document.getElementById('projYear').value,
+        status: document.getElementById('projStatus').value,
+        description: document.getElementById('projDescription').value,
+        technologies: document.getElementById('projTech').value.split(',').map(s => s.trim()).filter(s => s)
+      };
+      
+      if (index >= 0) {
+        await fetch(`${API_BASE}/projects/${index}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        portfolioData.projects[index] = data;
+      } else {
+        await fetch(`${API_BASE}/projects`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        portfolioData.projects.push(data);
+      }
+      
+      closeModal('projectModal');
+      renderProjects();
+      showAlert('Project saved!');
+    });
+
+    // Education
+    function renderEducation() {
+      const list = document.getElementById('educationList');
+      list.innerHTML = portfolioData.education.map((edu, i) => `
+        <div class="card">
+          <h3>${edu.degree}</h3>
+          <p>${edu.institution}</p>
+          <p>${edu.period}</p>
+          <div class="card-actions">
+            <button class="btn btn-danger" onclick="deleteEducation(${i})">🗑️ Delete</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function addEducation() {
+      const degree = prompt('Degree/Qualification:');
+      if (!degree) return;
+      const institution = prompt('Institution:');
+      const period = prompt('Period (e.g., 2021 – 2025):');
+      
+      portfolioData.education.push({ degree, institution, period });
+      await fetch(`${API_BASE}/education`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(portfolioData.education)
+      });
+      renderEducation();
+      showAlert('Education added!');
+    }
+
+    async function deleteEducation(i) {
+      if (!confirm('Delete this education?')) return;
+      portfolioData.education.splice(i, 1);
+      await fetch(`${API_BASE}/education`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(portfolioData.education)
+      });
+      renderEducation();
+      showAlert('Education deleted');
+    }
+
+    // Certifications
+    function renderCertifications() {
+      const list = document.getElementById('certificationsList');
+      list.innerHTML = portfolioData.certifications.map((cert, i) => `
+        <div class="card">
+          <h3>${cert.title}</h3>
+          <p>${cert.issuer}</p>
+          <div class="card-actions">
+            <button class="btn btn-danger" onclick="deleteCertification(${i})">🗑️ Delete</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function addCertification() {
+      const title = prompt('Certification Title:');
+      if (!title) return;
+      const issuer = prompt('Issuer (e.g., Coursera, Udemy):');
+      
+      portfolioData.certifications.push({ title, issuer });
+      await fetch(`${API_BASE}/certifications`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(portfolioData.certifications)
+      });
+      renderCertifications();
+      showAlert('Certification added!');
+    }
+
+    async function deleteCertification(i) {
+      if (!confirm('Delete this certification?')) return;
+      portfolioData.certifications.splice(i, 1);
+      await fetch(`${API_BASE}/certifications`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(portfolioData.certifications)
+      });
+      renderCertifications();
+      showAlert('Certification deleted');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+
+    // Close modal on outside click
+    document.querySelectorAll('.modal').forEach(modal => {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.classList.remove('active');
+      });
+    });
+
+    // Load data on start
+    loadData();
+  </script>
+</body>
+</html>

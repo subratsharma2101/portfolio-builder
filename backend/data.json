@@ -1,0 +1,139 @@
+{
+  "personalInfo": {
+    "name": "Subrat Sharma",
+    "title": "Full-Stack Developer & ML Enthusiast",
+    "email": "subrat.sharma@example.com",
+    "phone": "+91 XXXXXXXXXX",
+    "location": "New Delhi, India",
+    "github": "https://github.com",
+    "linkedin": "https://linkedin.com",
+    "summary": [
+      "Motivated and detail-oriented Computer Science undergraduate with hands-on experience in full-stack web development and applied machine learning.",
+      "Developed scalable MERN-based platforms and AI-driven applications during academic projects and internships.",
+      "Demonstrates strong problem-solving abilities, ownership of technical modules, and effective team coordination.",
+      "Seeking to apply engineering skills in challenging environments with a focus on backend systems and scalable architectures."
+    ]
+  },
+  "skills": {
+    "languages": [
+      "C++",
+      "Python",
+      "JavaScript",
+      "TypeScript",
+      "SQL"
+    ],
+    "frameworks": [
+      "React.js",
+      "Node.js",
+      "Express.js",
+      "MongoDB",
+      "TensorFlow",
+      "Tailwind CSS"
+    ],
+    "tools": [
+      "Git & GitHub",
+      "Docker",
+      "VS Code"
+    ],
+    "domains": [
+      "Full-Stack Web Development",
+      "Machine Learning",
+      "Problem Solving",
+      "Scalable Architecture",
+      "Backend APIs"
+    ]
+  },
+  "experience": [
+    {
+      "company": "Mobilise App Pvt. Ltd.",
+      "position": "Junior Software Developer (Intern)",
+      "location": "New Delhi",
+      "period": "Oct 2024 – Present",
+      "description": "Currently interning as a Junior Software Developer, working on MERN-based web solutions and performance optimization.",
+      "highlights": []
+    },
+    {
+      "company": "THDC India Limited",
+      "position": "Web Developer Intern",
+      "location": "Rishikesh",
+      "period": "Sep 2024 – Oct 2024",
+      "description": "Developed a scalable and secure MERN-based Job & Internship Portal.",
+      "highlights": [
+        "Enhanced UX by designing responsive front-end interfaces using React.js",
+        "Streamlined hiring workflows by automating job-posting logic, reducing HR manual effort by 60%"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "title": "Emotion Detection System",
+      "year": "2025",
+      "description": "Designed PoC for an AI system to detect emotions using facial, voice, and text data — later built as a Python-TensorFlow module.",
+      "technologies": [
+        "Python",
+        "TensorFlow",
+        "Machine Learning",
+        "AI",
+        "OpenCV"
+      ],
+      "status": "In Development"
+    },
+    {
+      "title": "E-Commerce Web App",
+      "year": "2024",
+      "description": "Built a MERN-based e-commerce platform with authentication, cart, and checkout system.",
+      "technologies": [
+        "React.js",
+        "Node.js",
+        "Express.js",
+        "MongoDB",
+        "JWT"
+      ],
+      "status": "Completed"
+    },
+    {
+      "title": "Job & Internship Portal",
+      "year": "2024",
+      "description": "Developed a scalable MERN-based portal enabling 100+ students to explore 50+ verified opportunities.",
+      "technologies": [
+        "React.js",
+        "Node.js",
+        "MongoDB",
+        "Express.js",
+        "Redux"
+      ],
+      "status": "Completed"
+    }
+  ],
+  "education": [
+    {
+      "degree": "B.Tech in Computer Science Engineering",
+      "institution": "THDC Institute of Hydropower Engineering and Technology",
+      "period": "2021 – 2025"
+    },
+    {
+      "degree": "Class 12 (PCMB) – 70%",
+      "institution": "Bidhan Chandra Vidyalaya",
+      "period": "2020 – 2021"
+    },
+    {
+      "degree": "Class 10 – 65%",
+      "institution": "Air Force Gyan Jyoti School",
+      "period": "2017 – 2018"
+    }
+  ],
+  "certifications": [
+    {
+      "title": "Machine Learning Specialization",
+      "issuer": "Coursera - Stanford University"
+    },
+    {
+      "title": "Full Stack Web Development",
+      "issuer": "Udemy"
+    },
+    {
+      "title": "React - The Complete Guide",
+      "issuer": "Udemy"
+    }
+  ]
+}
